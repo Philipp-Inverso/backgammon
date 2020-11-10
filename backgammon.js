@@ -1,4 +1,6 @@
 // global vars
+var somethingSelected = false;
+var selectedSpike = undefined;
 const winEnum = {
   LOSE: 0,
   WIN: 1,
@@ -29,6 +31,9 @@ function populateHead(head, content, pos) {
     if (spike.getPos() == pos) {continue}
     row = document.createElement('th');
     text = document.createTextNode('S' + spike.getNumber());
+    // row.onclick = function() {
+    //   console.log(row.textContent);
+    // }
 
     row.appendChild(text);
     head.appendChild(row);
@@ -96,6 +101,42 @@ function populateTable() {
     empty.appendChild(cell);
   }
   tableBody.appendChild(empty);
+
+  table = document.getElementsByTagName('thead');
+  for (thead of table) {
+    for (th of thead.children) {
+      //console.log(th);
+      //th.classList.add('button');
+      th.onclick = (click) => {
+        cell = click.target;
+        spike = spikes[cell.textContent.slice(1)];
+        if (somethingSelected) {
+          if (spike.getSelected()){
+            //console.log(cell.textContent)
+            spike.setSelected(false);
+            somethingSelected = false;
+            cell.style.background='white'
+          } else if (selectedSpike.getNumber() > spike.getNumber()){
+            console.log(selectedSpike.getNumber())
+            console.log(spike.getNumber())
+            console.log(selectedSpike.getNumber() +' > '+ spike.getNumber())
+            console.log('wrong direction')
+          }
+          console.log('foo')
+        } else {
+          //console.log(cell.textContent)
+          if (spike.getStoneCount()) {
+            spike.setSelected();
+            somethingSelected = true;
+            selectedSpike = spike;
+            cell.style.background='gray'
+          } else {
+            console.log('no stones')
+          }
+        }
+      };
+    }
+  }
 }
 
 function initStones(p0, p1) {

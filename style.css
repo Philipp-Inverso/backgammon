@@ -7,12 +7,44 @@
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
-}
-.button {
   transition-duration: 0.4s;
 }
 
 .button:hover {
   background-color: #4CAF50; /* Green */
   color: white;
+}
+
+table {
+  color: gray;
+  border-collapse: collapse;
+}
+
+thead {
+  color: black;
+  border: 1px solid black;
+}
+
+td {
+  border: 1px dotted gray;
+}
+
+th {
+  padding: 1em;
+  transition-duration: 0.4s;
+}
+
+th:hover {
+  color: white;
+  background: green;
+}
+
+.unselected {
+  border: 1px solid black;
+  background: white;
+}
+
+.selected {
+  border: 1px solid red;
+  background: gray;
 }

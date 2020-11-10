@@ -8,6 +8,7 @@ function Spike(number) {
   }
   var stones = []
   var containsStones = 0;
+  var selected = false;
 
   // methods
   this.getNumber = function() {
@@ -17,6 +18,12 @@ function Spike(number) {
     number = val;
   }
   this.getPos = function() {return pos}
+  this.getSelected = function() {
+    return selected;
+  }
+  this.setSelected = function(val=true) {
+    selected = val;
+  }
 
   this.getStones = function() {
     return stones;
@@ -24,6 +31,7 @@ function Spike(number) {
   this.addStone = function(stone) {
     if (containsStones > 0){
       if (stone.getPlayer().getName() != stones[0].getPlayer().getName()) {
+        console.log('TODO: error')
         return
       }
     }
