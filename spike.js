@@ -1,23 +1,31 @@
 function Spike(number) {
-  // members
+  // constructor
   var number = number;
+  var cell = undefined;
   if (number > 11) {
     var pos = 'up';
   } else {
     var pos = 'down'
   }
+
+  // members
   var stones = []
   var containsStones = 0;
   var selected = false;
+  var selectable = false;
 
-  // methods
+  // getter/setter
   this.getNumber = function() {
     return number;
   }
   this.setNumber = function(val) {
     number = val;
   }
-  this.getPos = function() {return pos}
+
+  this.getPos = function() {
+    return pos
+  }
+
   this.getSelected = function() {
     return selected;
   }
@@ -45,6 +53,20 @@ function Spike(number) {
   }
   this.getStoneCount = function() {
     return containsStones;
+  }
+
+  this.getSelectable = function() {
+    return selectable;
+  }
+  this.setSelectable = function(val=true) {
+    selectable = val;
+  }
+
+  this.setCell = function(val) {
+    cell = val
+  }
+  this.getCell = function() {
+    return cell
   }
 }
 

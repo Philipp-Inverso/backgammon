@@ -1,4 +1,6 @@
 // global vars
+var p0
+var p1
 var somethingSelected = false;
 var selectedSpike = undefined;
 var selectedCell = undefined;
@@ -12,84 +14,39 @@ const spikes = [];
 for (let i = 0; i < 24; i++) {
   spikes.push(new Spike(i));
 }
+var dices = [] //tuple
+turn = "None"
 
-// utility functions
-function roll() {
-  console.log(Math.ceil(Math.random()*6))
-}
+//methods
+function main() {
+  p0 = new Person('weiss')
+  p1 = new Person('schwarz')
 
-function spikeMovable(origin, target) {
-  // prep
-  let originPlayer = origin.getStones()[0].getPlayer().getName()
-  let targetPlayer
-  if (target.getStoneCount()) {
-    targetPlayer = target.getStones()[0].getPlayer().getName()
-  } else {
-    targetPlayer = 'none'
-  }
+  initStones(p0, p1)
 
-  // spikeMovable
-  if (target.getStoneCount() >= 5 || (target.getStoneCount() > 0 && originPlayer != targetPlayer)) {
-    return false
-  }
+  populateTable();
 
-  if (originPlayer == 'weiss' && origin.getNumber() < target.getNumber()) {
-    return false
-  } else if (originPlayer == 'schwarz' && origin.getNumber() > target.getNumber()) {
-    return false
-  }
-  return true
-
-  //return ((originPlayer == 'weiss' && origin.getNumber() < target.getNumber()) ||
-  //  (originPlayer == 'schwarz' && origin.getNumber() > target.getNumber())) &&
-  //  (target.getStoneCount() == 0 || originPlayer == targetPlayer)
-}
-
-function setSelected(val=true, spike, cell) {
-  if (val) {
-    somethingSelected = true
-    selectedSpike = spike
-    selectedCell = cell
-    spike.setSelected()
-    cell.style.background='gray'
-  } else {
-    somethingSelected = false
-    selectedSpike = undefined
-    selectedCell = undefined
-    spike.setSelected(false)
-    cell.style.background='white'
-  }
-}
-
-function stoneFoo(clicked) {
-  let cell = clicked.target;
-  let spike = spikes[cell.textContent.slice(1)];
-  if (somethingSelected) {
-    // clicked same spike
-    if (spike.getSelected()){
-      setSelected(false, selectedSpike, selectedCell)
-      setSelected(false, spike, cell)
-    // check for possible movement && execute
-    } else if (spikeMovable(selectedSpike, spike)){
-      spike.addStone(selectedSpike.removeStone())
-      populateTable()
-      setSelected(false, selectedSpike, selectedCell)
-      setSelected(false, spike, cell)
-    } else {
-    // TODO: errors
-      setSelected(false, selectedSpike, selectedCell)
-      setSelected(false, spike, cell)
-      console.log('wrong direction')
-    }
-  } else {
-    if (spike.getStoneCount()) {
-      setSelected(true, spike, cell)
-    } else {
-      console.log('no stones')
+  while (turn == "None") {
+    rollTurn()
+    // initialize turn with opponent because turn gets twisten when dice is rolled
+    if (d0 > d1) {
+      turn = p1.getName()
+      alert(p0.getName() + " beginnt")
+    } else if (d1 > d0) {
+      turn = p0.getName()
+      alert(p1.getName() + " beginnt")
     }
   }
 }
 
+function rollTurn() {
+  d0 = roll()
+  alert(p0.getName() + " würfelt: " + d0)
+  d1 = roll()
+  alert(p1.getName() + " würfelt: " + d1)
+}
+
+// populate board with initial stone positions
 function initStones(p0, p1) {
   for (let i = 0; i < 15; i++) {p0.stones.push(new Stone(p0));}
   for (let i = 0; i < 15; i++) {p1.stones.push(new Stone(p1));}
@@ -112,17 +69,31 @@ function initStones(p0, p1) {
   }
 }
 
-function main() {
-  var p0 = new Person('weiss')
-  var p1 = new Person('schwarz')
-
-  initStones(p0, p1)
-
-  populateTable();
+function roll() {
+  return Math.ceil(Math.random()*6);
 }
 
-function init() {
-  main()
+function throwDices() {
+  if (dices.length) {
+    console.log("move not done")
+    return
+  }
+
+  if (turn == p0.getName()) {
+    turn = p1.getName()
+  } else if (turn == p1.getName()) {
+    turn = p0.getName()
+  }
+  let out = document.getElementById("turn")
+  out.innerText = turn
+
+  let dice0 = roll();
+  let dice1 = roll();
+  dices[0] = dice0
+  dices[1] = dice1
+
+  let output = document.getElementById("roll");
+  output.innerText = dice0 + " | " + dice1
 }
 
-document.addEventListener("DOMContentLoaded", init);
+document.addEventListener("DOMContentLoaded", main);

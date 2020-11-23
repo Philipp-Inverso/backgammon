@@ -42,9 +42,17 @@ th:hover {
 .unselected {
   border: 1px solid black;
   background: white;
+  color: black;
 }
 
 .selected {
-  border: 1px solid red;
+  border: 1px solid black;
   background: gray;
+  color: black;
+}
+
+.selectable {
+  border: 1px solid red;
+  background: white;
+  color: black;
 }

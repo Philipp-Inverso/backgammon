@@ -8,7 +8,9 @@ function populateHead(head, content, pos) {
   for (spike of content) {
     if (spike.getPos() == pos) {continue}
     row = document.createElement('th');
+    row.classList.toggle("unselected")
     text = document.createTextNode('S' + spike.getNumber());
+    spike.setCell(row)
 
     row.appendChild(text);
     head.appendChild(row);
@@ -109,7 +111,7 @@ function populateTable() {
       //console.log(th);
       //th.classList.add('button');
             //console.log(cell.textContent)
-      th.onclick = (clicked) => {stoneFoo(clicked)};
+      th.onclick = (clicked) => {moveStone(clicked)};
     }
   }
 }
