@@ -3,6 +3,8 @@
 /// @param content = list of spikes
 /// @param pos = position to exclude ('up'/'down')
 function populateHead(head, content, pos) {
+  let row
+  let text
   for (spike of content) {
     if (spike.getPos() == pos) {continue}
     row = document.createElement('th');
@@ -18,9 +20,11 @@ function populateHead(head, content, pos) {
 /// @param content = list of spikes
 /// @param pos = position to exclude ('up'/'down')
 function populateBody(body, content, pos) {
-  tableBody = body;
-  playerRow = document.createElement('tr');
-  numberRow = document.createElement('tr');
+  let tableBody = body;
+  let playerRow = document.createElement('tr');
+  let numberRow = document.createElement('tr');
+  let cell
+  let text
   // number of stones
   for (spike of content) {
     if (spike.getPos() == pos) {continue}
@@ -54,13 +58,13 @@ function populateBody(body, content, pos) {
 }
 
 function clearTable() {
-  heads = document.getElementsByTagName('thead');
+  let heads = document.getElementsByTagName('thead');
   for (head of heads) {
     while (head.firstChild) {
       head.removeChild(head.firstChild)
     }
   }
-  bodys = document.getElementsByTagName('tbody');
+  let bodys = document.getElementsByTagName('tbody');
   for (body of bodys) {
     while (body.firstChild) {
       body.removeChild(body.firstChild)
@@ -74,21 +78,23 @@ function populateTable() {
   revSpikes.reverse()
 
   // upper-head
-  tableHead = document.getElementsByTagName('thead').item(0);
+  let tableHead = document.getElementsByTagName('thead').item(0);
   populateHead(tableHead, revSpikes, 'down')
   // lower-head
   tableHead = document.getElementsByTagName('thead').item(1);
   populateHead(tableHead, spikes, 'up')
 
   // lower-body
-  tableBody = document.getElementsByTagName('tbody').item(1);
+  let tableBody = document.getElementsByTagName('tbody').item(1);
   populateBody(tableBody, spikes, 'up')
   //upper-body
   tableBody = document.getElementsByTagName('tbody').item(0);
   populateBody(tableBody, revSpikes, 'down')
 
   // separating line
-  empty = document.createElement('tr');
+  let empty = document.createElement('tr');
+  let cell
+  let text
   for(let i=0; i<12; i++) {
     cell = document.createElement('td');
     text = document.createTextNode('.')
@@ -97,7 +103,7 @@ function populateTable() {
   }
   tableBody.appendChild(empty);
 
-  table = document.getElementsByTagName('thead');
+  let table = document.getElementsByTagName('thead');
   for (thead of table) {
     for (th of thead.children) {
       //console.log(th);

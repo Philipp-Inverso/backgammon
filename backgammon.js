@@ -18,18 +18,10 @@ function roll() {
   console.log(Math.ceil(Math.random()*6))
 }
 
-function include(file) {
-  var script  = document.createElement('script');
-  script.src  = file;
-  script.type = 'text/javascript';
-  script.defer = true;
-
-  document.getElementsByTagName('head').item(0).appendChild(script);
-}
-
 function spikeMovable(origin, target) {
   // prep
-  originPlayer = origin.getStones()[0].getPlayer().getName()
+  let originPlayer = origin.getStones()[0].getPlayer().getName()
+  let targetPlayer
   if (target.getStoneCount()) {
     targetPlayer = target.getStones()[0].getPlayer().getName()
   } else {
@@ -70,8 +62,8 @@ function setSelected(val=true, spike, cell) {
 }
 
 function stoneFoo(clicked) {
-  cell = clicked.target;
-  spike = spikes[cell.textContent.slice(1)];
+  let cell = clicked.target;
+  let spike = spikes[cell.textContent.slice(1)];
   if (somethingSelected) {
     // clicked same spike
     if (spike.getSelected()){
@@ -85,6 +77,8 @@ function stoneFoo(clicked) {
       setSelected(false, spike, cell)
     } else {
     // TODO: errors
+      setSelected(false, selectedSpike, selectedCell)
+      setSelected(false, spike, cell)
       console.log('wrong direction')
     }
   } else {
