@@ -16,7 +16,7 @@ for (let i = 0; i < 24; i++) {
   spikes.push(new Spike(i));
 }
 var dices = [] //tuple
-turn = "None"
+turn = undefined
 
 //methods
 function main() {
@@ -27,24 +27,26 @@ function main() {
 
   populateTable();
 
-  while (turn == "None") {
-    rollTurn()
+  let throww
+  while (turn == undefined) {
+    throww = rollTurn()
     // initialize turn with opponent because turn gets twisten when dice is rolled
-    if (d0 > d1) {
-      turn = p1.getName()
+    if (throww[0] > throww[1]) {
+      turn = p1
       alert(p0.getName() + " beginnt")
-    } else if (d1 > d0) {
-      turn = p0.getName()
+    } else if (throww[1] > throww[0]) {
+      turn = p0
       alert(p1.getName() + " beginnt")
     }
   }
 }
 
 function rollTurn() {
-  d0 = roll()
+  let d0 = roll()
   alert(p0.getName() + " würfelt: " + d0)
-  d1 = roll()
+  let d1 = roll()
   alert(p1.getName() + " würfelt: " + d1)
+  return [d0, d1]
 }
 
 // populate board with initial stone positions
@@ -95,42 +97,27 @@ function prepareTurn() { /// ON_CLICK for dice button
       if (somethingSelected) {
         setSpikeSelected(false, selectedSpike, selectedCell)
       }
+      unhighlightSpikes()
       emptyBar = false
       dices = []
     }
   }
   throwDices()
-  // twist turn + check for stones in bar
-  if (turn == p0.getName()) {
-    turn = p1.getName()
-    if (p1.getStonesInBar()) {
-      handleStonesInBar(p1)
-    }
-  } else if (turn == p1.getName()) {
-    turn = p0.getName()
-    if (p0.getStonesInBar()) {
-      handleStonesInBar(p0)
-    }
+  // next player
+  if (turn == p0) {
+    turn = p1
+  } else if (turn == p1) {
+    turn = p0
+  }
+  if (turn.getStonesInBar()) {
+    handleStonesInBar(p1)
   }
   updateHTML()
 }
 
-function handleStonesInBar(player) {
-  // init
-  let localSpikes
-  let pos
-  if (player.getName() == p0.getName()) {
-    localSpikes = [].concat(spikes)
-    localSpikes.reverse()
-    pos = 0
-  } else {
-    localSpikes = spikes
-    pos = 1
-  }
-  // do
-  for (target of localSpikes) {
-    // sort out non-home spikes
-    if (pos == 0) {
+function handleStonesInBar() {
+  for (target of spikes) {
+    if (turn == p0) {
       if (target.getNumber() < 18) {
         continue
       }
@@ -139,10 +126,10 @@ function handleStonesInBar(player) {
         continue
       }
     }
-    if (isSpikeFullOrOpponent(player.getName(), target)) {
+    if (isSpikeFullOrOpponent(target)) {
       continue
     }
-    if (turn == p0.getName()) {
+    if (turn == p0) {
       if (24-target.getNumber() != dices[0] && 24-target.getNumber() != dices[1]){
         continue
       }
@@ -157,14 +144,8 @@ function handleStonesInBar(player) {
 }
 
 function updateHTML() {
-  let player
-  if (turn == p0.getName()){
-    player = p0
-  } else {
-    player = p1
-  }
   let out = document.getElementById("turn")
-  out.innerText = turn + " | " + player.getStonesInBar()
+  out.innerText = turn.getName() + " | " + turn.getStonesInBar()
 
   let output = document.getElementById("roll");
   output.innerText = ""

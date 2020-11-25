@@ -1,5 +1,4 @@
 function Spike(number) {
-  // constructor
   var number = number;
   var cell = undefined;
   if (number > 11) {
@@ -8,13 +7,11 @@ function Spike(number) {
     var pos = 'down'
   }
 
-  // members
   var stones = []
-  var containsStones = 0;
+  var stoneCount = 0;
   var selected = false;
   var selectable = false;
 
-  // getter/setter
   this.getNumber = function() {
     return number;
   }
@@ -37,25 +34,25 @@ function Spike(number) {
     return stones;
   }
   this.addStone = function(stone) {
-    if (containsStones > 0){
-      if (stone.getPlayer().getName() != stones[0].getPlayer().getName()) {
+    if (stoneCount > 0){
+      if (stone.getPlayer() != stones[0].getPlayer()) {
         console.log('TODO: error') // should not reach this
         return
       }
     }
     stones.push(stone);
     stone.setPos(this);
-    containsStones += 1;
+    stoneCount += 1;
   }
   this.removeStone = function() {
-    if (containsStones) {
-      containsStones -= 1;
+    if (stoneCount) {
+      stoneCount -= 1;
       return stones.pop();
     }
     console.log("TODO: error") // should not reach this
   }
   this.getStoneCount = function() {
-    return containsStones;
+    return stoneCount;
   }
 
   this.getSelectable = function() {

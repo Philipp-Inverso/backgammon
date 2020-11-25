@@ -1,16 +1,10 @@
 function moveStone(clicked) { /// ON_CLICK for thead
   let cell = clicked.target;
   let spike = spikes[cell.textContent.slice(1)];
-  // DEBUG
-  //if (p0.getName()==turn){console.log(p0.getStonesInBar())}
-  //else {console.log(p1.getStonesInBar())}
-  // ====
   if (emptyBar) {
     if (spike.getSelectable()) {
-
       if (doesSpikeContainStoneOfOpponent(spike)) {
-        let stone = spike.getStones()[0]
-        let player = stone.getPlayer()
+        let player = spike.getStones()[0].getPlayer()
         spike.removeStone().setIsInBar(true)
         player.addStonesInBar()
       }
@@ -18,20 +12,15 @@ function moveStone(clicked) { /// ON_CLICK for thead
       populateTable()
       unhighlightSpike(spike)
 
-      if (turn == p0.getName()) {
+      if (turn == p0) {
         removeUsedDice(24, spike.getNumber())
-        if (p0.getStonesInBar()) {
-          handleStonesInBar(p0)
-        } else {
-          emptyBar = false
-        }
       } else {
         removeUsedDice(-1, spike.getNumber())
-        if (p1.getStonesInBar()) {
-          handleStonesInBar(p1)
-        } else {
-          emptyBar = false
-        }
+      }
+      if (turn.getStonesInBar()) {
+        handleStonesInBar()
+      } else {
+        emptyBar = false
       }
     } else {
       console.log("spike not selectable")
@@ -41,14 +30,14 @@ function moveStone(clicked) { /// ON_CLICK for thead
   if (somethingSelected) {
     // clicked same spike
     if (spike.getSelected()){
-      setSpikeSelected(false, selectedSpike, selectedCell)
-      setSpikeSelected(false, spike, cell)
+      setSpikeSelected(false, selectedSpike)
+      setSpikeSelected(false, spike)
     } else {
-      handleStoneMovement(cell, spike)
+      handleStoneMovement(spike)
     }
   } else {
     if (spike.getStoneCount()) {
-      handleSpikeSelection(cell, spike)
+      handleSpikeSelection(spike)
     } else {
       console.log('no stones')
     }
@@ -56,30 +45,18 @@ function moveStone(clicked) { /// ON_CLICK for thead
 }
 
 function getStoneInBar() {
-  if (turn == p0.getName()){
-    for (stone of p0.getStones()) {
-      if (stone.getIsInBar()) {
-        stone.setIsInBar(false)
-        p0.remStonesInBar()
-        return stone
-      }
-      continue
-    }
-  } else {
-    for (stone of p1.getStones()) {
-      if (stone.getIsInBar()) {
-        stone.setIsInBar(false)
-        p1.remStonesInBar()
-        return stone
-      }
-      continue
+  for (stone of turn.getStones()) {
+    if (stone.getIsInBar()) {
+      stone.setIsInBar(false)
+      turn.remStonesInBar()
+      return stone
     }
   }
 }
 
-function handleSpikeSelection(cell, spike) {
+function handleSpikeSelection(spike) {
   if (isPlayerAbleToSelect(spike)) {
-    setSpikeSelected(true, spike, cell)
+    setSpikeSelected(true, spike)
     setSpikesSelectableForMovement()
   }
 }
@@ -89,27 +66,26 @@ function isPlayerAbleToSelect(spike) {
     alert("Please throw dice")
     return false
   }
-  if (spike.getStones()[0].getPlayer().getName() != turn) {
+  if (turn != spike.getStones()[0].getPlayer()) {
     console.log("not your stone")
     return false
   }
   return true
 }
 
-function handleStoneMovement(cell, spike) {
+function handleStoneMovement(spike) {
   if (spike.getSelectable()) {
     removeUsedDice(selectedSpike.getNumber(), spike.getNumber())
     // stein schlagen
     if (doesSpikeContainStoneOfOpponent(spike)) {
-      let stone = spike.getStones()[0]
-      let player = stone.getPlayer()
+      let player = spike.getStones()[0].getPlayer()
       spike.removeStone().setIsInBar(true)
       player.addStonesInBar()
     }
     spike.addStone(selectedSpike.removeStone())
     populateTable()
-    setSpikeSelected(false, selectedSpike, selectedCell)
-    setSpikeSelected(false, spike, cell)
+    setSpikeSelected(false, selectedSpike)
+    setSpikeSelected(false, spike)
   } else {
     console.log("spike not selectable")
   }
@@ -117,9 +93,7 @@ function handleStoneMovement(cell, spike) {
 
 function doesSpikeContainStoneOfOpponent(spike) {
   if (spike.getStoneCount()) {
-    let stone = spike.getStones()[0]
-    let player = stone.getPlayer()
-    if (player.getName() != turn) {
+    if (turn != spike.getStones()[0].getPlayer()) {
       return true
     }
   }
@@ -127,7 +101,7 @@ function doesSpikeContainStoneOfOpponent(spike) {
 }
 
 function removeUsedDice(originPos, targetPos) {
-  if (turn == p0.getName()){
+  if (turn == p0){
     if (dices.indexOf(originPos - targetPos) == 0) {
       dices = dices.reverse()
     }
@@ -140,7 +114,8 @@ function removeUsedDice(originPos, targetPos) {
   updateHTML()
 }
 
-function setSpikeSelected(val=true, spike, cell) {
+function setSpikeSelected(val=true, spike) {
+  let cell = spike.getCell()
   if (val) {
     somethingSelected = true
     selectedSpike = spike
@@ -177,19 +152,17 @@ function highlightSpike(spike) {
 }
 
 function setSpikesSelectableForMovement() {
-  let origin = selectedSpike
-  let number = origin.getNumber()
-  let originPlayer = origin.getStones()[0].getPlayer().getName()
+  let number = selectedSpike.getNumber()
   for (target of spikes) {
-    if (!spikeMovableTo(origin, target)) {
+    if (!spikeMovableTo(selectedSpike, target)) {
       continue
     }
     // select with dice reachable
-    if (originPlayer == p0.getName()) {
+    if (turn == p0) {
       if (target.getNumber() == number - dices[0] || target.getNumber() == number - dices[1]) {
         highlightSpike(target)
       }
-    } else if (originPlayer == p1.getName()) {
+    } else {
       if (target.getNumber() == number + dices[0] || target.getNumber() == number + dices[1]) {
         highlightSpike(target)
       }
@@ -199,10 +172,9 @@ function setSpikesSelectableForMovement() {
 
 function spikeMovableTo(origin, target) {
   let number = origin.getNumber()
-  let originPlayer = origin.getStones()[0].getPlayer().getName()
-  let targetPlayer
+  let originPlayer = origin.getStones()[0].getPlayer()
   // ignore all numbers in wrong direction
-  if (originPlayer == p0.getName()) {
+  if (originPlayer == p0) {
     if (target.getNumber() >= number) {
       return false
     }
@@ -211,22 +183,17 @@ function spikeMovableTo(origin, target) {
       return false
     }
   }
-  if (isSpikeFullOrOpponent(originPlayer, target)) {
+  if (isSpikeFullOrOpponent(target)) {
     return false
   }
   return true
 }
 
-function isSpikeFullOrOpponent(currentPlayer, target) {
-  let targetPlayer
-  // get targetPlayer
+function isSpikeFullOrOpponent(target) {
   if (target.getStoneCount()) {
-    targetPlayer = target.getStones()[0].getPlayer().getName()
-  } else {
-    targetPlayer = "None"
-  }
-  if (targetPlayer != "None" && targetPlayer != currentPlayer && target.getStoneCount() > 1) {
-    return true
+    if (turn != target.getStones()[0].getPlayer() && target.getStoneCount() > 1) {
+      return true
+    }
   }
   if (target.getStoneCount() >= 5) {
     return true
@@ -235,53 +202,35 @@ function isSpikeFullOrOpponent(currentPlayer, target) {
 }
 
 function skipTurn(){
-  let target
   if (emptyBar) {
     for (spike of spikes) {
-      if (turn == p0.getName()) {
-        if (17 < spike.getNumber() && spike.getNumber() < 24) {
-          if (!isSpikeFullOrOpponent(p0.getName(), spike)) {
-            if (spike.getNumber() == dice[0] || spike.getNumber() == dice[1]) {
-              return false
-            }
-          }
-        }
-      } else {
-        if (0 < spike.getNumber() && spike.getNumber() < 6) {
-          if (!isSpikeFullOrOpponent(p1.getName(), spike)) {
-            if (spike.getNumber() == dice[0] || spike.getNumber() == dice[1]) {
-              return false
-            }
-          }
-        }
+      if (spike.getSelectable()){
+        return false
       }
     }
   } else {
+    let res
+    let target
     for (spike of spikes) {
       if (!spike.getStoneCount()) {
         continue
       }
-      if (spike.getStones()[0].getPlayer().getName() != turn) {
+      if (turn != spike.getStones()[0].getPlayer()) {
         continue
       }
       for (dice of dices) {
-        if (p0.getName() == turn) {
-          let res = spike.getNumber() - dice
-          if (0 <= res && res <= 23) {
-            target = spikes[res]
-          } else {
-            continue
-          }
+        if (turn == p0) {
+          res = spike.getNumber() - dice
         } else {
-          let res = spike.getNumber() + dice
-          if (0 <= res && res <= 23) {
-            target = spikes[res]
-          } else {
-            continue
-          }
+          res = spike.getNumber() + dice
+        }
+        if (0 <= res && res <= 23) {
+          target = spikes[res]
+        } else {
+          continue
         }
         if (target.getStoneCount()) {
-          if (target.getStones()[0].getPlayer().getName() != turn) {
+          if (turn != target.getStones()[0].getPlayer() && target.getStoneCount() > 1) {
             continue
           }
         }
@@ -296,16 +245,13 @@ function skipTurn(){
 
 function removeStone() {
   if (somethingSelected) { // select should check for selectable spike
-    let player
     let number
-    if (turn == p0.getName()) {
-      player = p0
+    if (turn == p0) {
       number = selectedSpike.getNumber()+1
     } else {
-      player = p1
       number = 24-selectedSpike.getNumber()
     }
-    for (stone of player.getStones()) {
+    for (stone of turn.getStones()) {
       if (!stone.getIsHome()) {
         console.log("not all stones home")
         return
@@ -315,15 +261,15 @@ function removeStone() {
       console.log("not in range")
       return
     }
-    if (turn = p0.getName()){
-      removeUsedDice(selectedSpike.getNumber(), 0)
+    if (turn == p0){
+      removeUsedDice(number, 0)
     } else {
       removeUsedDice(24, selectedSpike.getNumber())
     }
     selectedSpike.removeStone().remove()
     setSpikeSelected(false, selectedSpike, selectedCell)
     populateTable()
-    for (stone of player.getStones()) {
+    for (stone of turn.getStones()) {
       if (stone.getIsInGame()) {
         return
       }
