@@ -13,5 +13,6 @@ function Person(name) {
   this.getStones = function() {return this.stones}
   this.getStonesInBar = function() {return stonesInBar}
   this.addStonesInBar = function(val=1) {stonesInBar += val}
+  this.remStonesInBar = function(val=1) {stonesInBar -= val}
 }
 

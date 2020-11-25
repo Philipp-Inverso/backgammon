@@ -39,7 +39,7 @@ function Spike(number) {
   this.addStone = function(stone) {
     if (containsStones > 0){
       if (stone.getPlayer().getName() != stones[0].getPlayer().getName()) {
-        console.log('TODO: error')
+        console.log('TODO: error') // should not reach this
         return
       }
     }
@@ -48,8 +48,11 @@ function Spike(number) {
     containsStones += 1;
   }
   this.removeStone = function() {
-    containsStones -= 1;
-    return stones.pop();
+    if (containsStones) {
+      containsStones -= 1;
+      return stones.pop();
+    }
+    console.log("TODO: error") // should not reach this
   }
   this.getStoneCount = function() {
     return containsStones;

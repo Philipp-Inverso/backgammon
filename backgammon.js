@@ -1,6 +1,7 @@
 // global vars
 var p0
 var p1
+var emptyBar = false
 var somethingSelected = false;
 var selectedSpike = undefined;
 var selectedCell = undefined;
@@ -74,26 +75,103 @@ function roll() {
 }
 
 function throwDices() {
-  if (dices.length) {
-    console.log("move not done")
-    return
-  }
-
-  if (turn == p0.getName()) {
-    turn = p1.getName()
-  } else if (turn == p1.getName()) {
-    turn = p0.getName()
-  }
-  let out = document.getElementById("turn")
-  out.innerText = turn
-
   let dice0 = roll();
   let dice1 = roll();
-  dices[0] = dice0
-  dices[1] = dice1
+  dices.push(dice0)
+  dices.push(dice1)
+  if (dice0 == dice1) {
+    dices.push(dice0)
+    dices.push(dice1)
+  }
+}
+
+function prepareTurn() { /// ON_CLICK for dice button
+  if (dices.length) {
+    if (!skipTurn()) {
+      console.log("move not done")
+      return
+    } else {
+      console.log("skip turn")
+      if (somethingSelected) {
+        setSpikeSelected(false, selectedSpike, selectedCell)
+      }
+      emptyBar = false
+      dices = []
+    }
+  }
+  throwDices()
+  // twist turn + check for stones in bar
+  if (turn == p0.getName()) {
+    turn = p1.getName()
+    if (p1.getStonesInBar()) {
+      handleStonesInBar(p1)
+    }
+  } else if (turn == p1.getName()) {
+    turn = p0.getName()
+    if (p0.getStonesInBar()) {
+      handleStonesInBar(p0)
+    }
+  }
+  updateHTML()
+}
+
+function handleStonesInBar(player) {
+  // init
+  let localSpikes
+  let pos
+  if (player.getName() == p0.getName()) {
+    localSpikes = [].concat(spikes)
+    localSpikes.reverse()
+    pos = 0
+  } else {
+    localSpikes = spikes
+    pos = 1
+  }
+  // do
+  for (target of localSpikes) {
+    // sort out non-home spikes
+    if (pos == 0) {
+      if (target.getNumber() < 18) {
+        continue
+      }
+    } else {
+      if (target.getNumber() > 5) {
+        continue
+      }
+    }
+    if (isSpikeFullOrOpponent(player.getName(), target)) {
+      continue
+    }
+    if (turn == p0.getName()) {
+      if (24-target.getNumber() != dices[0] && 24-target.getNumber() != dices[1]){
+        continue
+      }
+    } else {
+      if (target.getNumber()+1 != dices[0] && target.getNumber()+1 != dices[1]){
+        continue
+      }
+    }
+    highlightSpike(target);
+  }
+  emptyBar = true
+}
+
+function updateHTML() {
+  let player
+  if (turn == p0.getName()){
+    player = p0
+  } else {
+    player = p1
+  }
+  let out = document.getElementById("turn")
+  out.innerText = turn + " | " + player.getStonesInBar()
 
   let output = document.getElementById("roll");
-  output.innerText = dice0 + " | " + dice1
+  output.innerText = ""
+  for (dice of dices) {
+    output.innerText += dice + " |"
+    output.innerText += " "
+  }
 }
 
 document.addEventListener("DOMContentLoaded", main);

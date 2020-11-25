@@ -1,7 +1,7 @@
 function Stone(player) {
   var player = player
   var inBar = false;
-  var inGame=false;
+  var inGame = true;
   var isHome = undefined;
   var pos = undefined;
 
@@ -16,13 +16,19 @@ function Stone(player) {
 
   this.setPos = function(spike) {
     pos = spike;
-    if (spike.getNumber() < 7 && player.name == 'weiss') {
+    if (spike.getNumber() < 7 && player == p0) {
       isHome = true;
-    } else if (spike.getNumber() > 18 && player.name == 'schwarz') {
+    } else if (spike.getNumber() > 17 && player == p1) {
       isHome = true;
     } else {
       isHome = false;
     }
+  }
+
+  this.remove = function() {
+    isHome = true
+    inGame = false
+    pos = undefined
   }
 }
 
