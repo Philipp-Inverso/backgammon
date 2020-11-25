@@ -1,0 +1,58 @@
+.button {
+  background-color: white; /* Green */
+  border: 2px solid #4CAF50;
+  color: black;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  transition-duration: 0.4s;
+}
+
+.button:hover {
+  background-color: #4CAF50; /* Green */
+  color: white;
+}
+
+table {
+  color: gray;
+  border-collapse: collapse;
+}
+
+thead {
+  color: black;
+  border: 1px solid black;
+}
+
+td {
+  border: 1px dotted gray;
+}
+
+th {
+  padding: 1em;
+  transition-duration: 0.4s;
+}
+
+th:hover {
+  color: white;
+  background: green;
+}
+
+.unselected {
+  border: 1px solid black;
+  background: white;
+  color: black;
+}
+
+.selected {
+  border: 1px solid black;
+  background: gray;
+  color: black;
+}
+
+.selectable {
+  border: 1px solid red;
+  background: white;
+  color: black;
+}

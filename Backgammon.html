@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <title>Backgammon</title>
+    <link rel="stylesheet" href="style.css">
+    <meta charset=utf-8 />
+    <!-- scripts -->
+    <script src="movement.js" type="text/javascript"/></script>
+    <script src="table.js" type="text/javascript"/></script>
+    <script src="stone.js" type="text/javascript"/></script>
+    <script src="spike.js" type="text/javascript"/></script>
+    <script src="player.js" type="text/javascript"/></script>
+    <script src="backgammon.js" type="text/javascript"/></script>
+  </head>
+  <body>
+    <div class=button onclick=prepareTurn()>dice</div>
+    <div id="turn"></div>
+    <div id="board"></div>
+    <div id=roll></div>
+    <div id=foo>
+      <br>
+    </div>
+    <table style="width:100%" border=1px>
+      <thead> </thead>
+      <tbody> </tbody>
+      <div><!--divide bodies--></div>
+      <tbody> </tbody>
+      <thead> </thead>
+    </table>
+    <div><br></div>
+    <div class=button onclick=removeStone()>removeStone</div>
+  </body>
+</html>
