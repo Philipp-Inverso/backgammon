@@ -90,11 +90,11 @@ function throwDices() {
 function prepareTurn() { /// ON_CLICK for dice button
   if (dices.length) {
     if (!skipTurn()) {
-      let output = document.getElementById("roll")
+      let output = document.getElementById("error")
       output.innerText = "move not done"
       return
     } else {
-      let output = document.getElementById("roll")
+      let output = document.getElementById("error")
       output.innerText = "skip turn"
       if (somethingSelected) {
         setSpikeSelected(false, selectedSpike)
