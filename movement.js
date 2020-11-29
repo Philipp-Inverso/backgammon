@@ -1,6 +1,6 @@
 function moveStone(clicked) { /// ON_CLICK for thead
-  let cell = clicked.target;
-  let spike = spikes[cell.textContent.slice(1)];
+  let cell = clicked.target
+  let spike = spikes[cell.textContent.slice(1)]
   if (emptyBar) {
     if (spike.getSelectable()) {
       if (doesSpikeContainStoneOfOpponent(spike)) {
@@ -9,7 +9,7 @@ function moveStone(clicked) { /// ON_CLICK for thead
         player.addStonesInBar()
       }
       spike.addStone(getStoneInBar())
-      populateTable()
+      //TODO popTable
       unhighlightSpike(spike)
 
       if (turn == p0) {
@@ -83,7 +83,7 @@ function handleStoneMovement(spike) {
       player.addStonesInBar()
     }
     spike.addStone(selectedSpike.removeStone())
-    populateTable()
+    //TODO popTable
     setSpikeSelected(false, selectedSpike)
     setSpikeSelected(false, spike)
   } else {
@@ -268,7 +268,7 @@ function removeStone() {
     }
     selectedSpike.removeStone().remove()
     setSpikeSelected(false, selectedSpike, selectedCell)
-    populateTable()
+    //TODO popTable
     for (stone of turn.getStones()) {
       if (stone.getIsInGame()) {
         return
