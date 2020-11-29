@@ -1,0 +1,56 @@
+.mittelbegrenzung {
+    width: 20px;
+    height: 450px;
+    padding: 5px;
+    background-color: #6F6E6D;
+    position: absolute;
+    left: 280px;
+    top: 0px;
+
+}
+
+.dreieck {
+    width: 0;
+    height: 0;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    display: inline;
+    float: left;
+}
+
+.dreieck.top {
+    border-top: 200px solid #f00;
+}
+
+.dreieck.top.ungerade{
+    border-top: 200px solid  #6F6E6D;
+}
+
+.dreieck.top.left{
+    margin-left: 20px
+}
+
+.dreieck.right{
+    margin-left: 70px
+}
+
+.dreieck.bottom{
+    border-bottom: 200px solid  #f00;
+    position: relative;
+    left: 20px;
+    bottom: -60px;
+}
+
+.dreieck.bottom.ungerade{
+    border-bottom: 200px solid #6F6E6D;
+}
+
+.selectable {
+  background-color: white;
+}
+.unselected {
+  background-color: transparent;
+}
+.selected {
+  background-color: blue;
+}

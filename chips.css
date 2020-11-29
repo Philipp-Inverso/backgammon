@@ -1,0 +1,18 @@
+.stein {
+    width: 36px;
+    height: 36px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 18px;
+}
+
+.stein.weiss {
+    background-color: white;
+    opacity: 0.95;
+}
+
+.stein.schwarz {
+    background-color: black;
+    opacity: 0.8;
+}

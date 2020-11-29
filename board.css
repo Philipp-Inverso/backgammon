@@ -1,0 +1,22 @@
+.spielbrett {
+    width: 610px;
+    height: 480px;
+    position: relative;
+    background-color: #b4b3b1;
+    box-sizing: border-box;
+    border: 10px solid #6F6E6D;
+    border-radius: 1px;
+    margin: auto;
+    padding: 0px;
+}
+
+.mittelbegrenzung {
+    width: 20px;
+    height: 450px;
+    padding: 5px;
+    background-color: #6F6E6D;
+    position: absolute;
+    left: 3500px;
+    top: 0px;
+    
+}
