@@ -44,3 +44,13 @@
 .dreieck.bottom.ungerade{
     border-bottom: 200px solid #6F6E6D;
 }
+
+.selectable {
+  background-color: white;
+}
+.unselected {
+  background-color: transparent;
+}
+.selected {
+  background-color: blue;
+}

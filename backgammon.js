@@ -4,7 +4,6 @@ let p1
 let emptyBar = false
 let somethingSelected = false
 let selectedSpike = undefined
-let selectedCell = undefined
 const winEnum = {
   LOSE: 0,
   WIN: 1,
@@ -12,20 +11,21 @@ const winEnum = {
   BACKGAMMON: 3
 }
 const spikes = []
-for (let i = 0; i < 24; i++) {
-  spikes.push(new Spike(i))
-}
-let dices = [] //tuple
+let dices = []
 turn = undefined
 
 //methods
 function main() {
+  for (let i = 0; i < 24; i++) {
+    spikes.push(new Spike(i))
+  }
+
   p0 = new Person('weiss')
   p1 = new Person('schwarz')
 
   initStones(p0, p1)
 
-  //TODO popTable
+  init()
 
   let throww
   while (turn == undefined) {
@@ -51,24 +51,24 @@ function rollTurn() {
 
 // populate board with initial stone positions
 function initStones(p0, p1) {
-  for (let i = 0; i < 15; i++) {p0.stones.push(new Stone(p0))}
-  for (let i = 0; i < 15; i++) {p1.stones.push(new Stone(p1))}
+  for (let i = 0; i < 15; i++) {p0.stones.push(new Stone(p0, i))}
+  for (let i = 0; i < 15; i++) {p1.stones.push(new Stone(p1, i))}
 
   for (let i=0; i<5; i++) {
-    spikes[5].addStone(p0.stones[i])
-    spikes[18].addStone(p1.stones[i])
+    spikes[17].addStone(p0.stones[i])
+    spikes[5].addStone(p1.stones[i])
   }
   for (let i=5; i<8; i++) {
-    spikes[7].addStone(p0.stones[i])
-    spikes[16].addStone(p1.stones[i])
+    spikes[19].addStone(p0.stones[i])
+    spikes[7].addStone(p1.stones[i])
   }
   for (let i=8; i<13; i++) {
-    spikes[12].addStone(p0.stones[i])
-    spikes[11].addStone(p1.stones[i])
+    spikes[11].addStone(p0.stones[i])
+    spikes[23].addStone(p1.stones[i])
   }
   for (let i=13; i<15; i++) {
-    spikes[23].addStone(p0.stones[i])
-    spikes[0].addStone(p1.stones[i])
+    spikes[0].addStone(p0.stones[i])
+    spikes[12].addStone(p1.stones[i])
   }
 }
 
@@ -90,12 +90,14 @@ function throwDices() {
 function prepareTurn() { /// ON_CLICK for dice button
   if (dices.length) {
     if (!skipTurn()) {
-      console.log("move not done")
+      let output = document.getElementById("roll")
+      output.innerText = "move not done"
       return
     } else {
-      console.log("skip turn")
+      let output = document.getElementById("roll")
+      output.innerText = "skip turn"
       if (somethingSelected) {
-        setSpikeSelected(false, selectedSpike, selectedCell)
+        setSpikeSelected(false, selectedSpike)
       }
       unhighlightSpikes()
       emptyBar = false
@@ -145,13 +147,16 @@ function handleStonesInBar() {
 
 function updateHTML() {
   let out = document.getElementById("turn")
-  out.innerText = turn.getName() + " | " + turn.getStonesInBar()
+  out.innerText = "An der Reihe: " + turn.getName()
 
-  let output = document.getElementById("roll")
-  output.innerText = ""
+  out = document.getElementById("board")
+  out.innerText = "Steine im Board: " + turn.getStonesInBar()
+
+  out = document.getElementById("roll")
+  out.innerText = ""
   for (dice of dices) {
-    output.innerText += dice + " |"
-    output.innerText += " "
+    out.innerText += dice + " |"
+    out.innerText += " "
   }
 }
 

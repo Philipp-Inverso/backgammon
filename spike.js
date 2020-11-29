@@ -1,22 +1,45 @@
-function Spike(number) {
-  var number = number;
-  var cell = undefined;
+function Spike(inNumber) {
+  var number
+  if (inNumber < 12) {
+    number = 23-inNumber
+  } else {
+    number = inNumber-12
+  }
   if (number > 11) {
     var pos = 'up';
   } else {
     var pos = 'down'
   }
 
+  let game = document.getElementById("spielbrett")
+  let div = document.createElement("div")
+  div.classList.add("dreieck")
+  div.onclick = (clicked) => {moveStone(clicked)};
+  div.id = number
+  if (number > 11) {
+    div.classList.add("top")
+    if (game.childElementCount == 1) {
+      div.classList.add("left")
+    }
+  } else {
+    div.classList.add("bottom")
+  }
+  if (game.childElementCount == 7 || game.childElementCount == 19) {
+    div.classList.add("right")
+  }
+  if (inNumber % 2 == 0) {
+    div.classList.add("ungerade")
+  }
+  game.appendChild(div)
+
   var stones = []
   var stoneCount = 0;
   var selected = false;
   var selectable = false;
 
+  this.getDiv = function() {return div}
   this.getNumber = function() {
     return number;
-  }
-  this.setNumber = function(val) {
-    number = val;
   }
 
   this.getPos = function() {
@@ -60,13 +83,6 @@ function Spike(number) {
   }
   this.setSelectable = function(val=true) {
     selectable = val;
-  }
-
-  this.setCell = function(val) {
-    cell = val
-  }
-  this.getCell = function() {
-    return cell
   }
 }
 

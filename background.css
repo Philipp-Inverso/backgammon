@@ -1,0 +1,38 @@
+.ueberschrift1 {
+    margin: auto;
+    background-color: lightcyan;
+    padding: 1em;
+    border-radius: 0.5em 0 0.5em ;
+    border: 1px solid rgb(10, 103, 119);
+    width: 700px;
+    position: relative;
+    text-align: center;
+
+}
+
+.spiel {
+    margin: auto;
+    margin-top: 1em;
+    background-color: rgb(240, 135, 158);
+    padding: 1em;
+    border-radius: 0.5em 0 0.5em ;
+    border: 1px solid rgb(190, 133, 147);
+    width: 700px;
+    position: relative;
+    text-align: center;
+
+}
+
+.info {
+    margin: auto;
+    margin-top: 1em;
+    background-color: rgb(105, 103, 104);
+    padding: 1em;
+    border-radius: 0.5em 0 0.5em ;
+    border: 1px solid rgb(56, 56, 56);
+    width: 500px;
+    position: relative;
+    text-align: left;
+    color: rgb(230, 230, 230);
+
+}

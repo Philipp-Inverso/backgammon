@@ -4,7 +4,6 @@
     <title>Backgammon</title>
     <meta charset=utf-8 />
 
-    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="background.css">
     <link rel="stylesheet" href="board.css">
     <link rel="stylesheet" href="spikes.css">
@@ -17,6 +16,7 @@
     <script src="player.js"/></script>
     <script src="backgammon.js"/></script>
     <script src="test.js"></script>
+    <!--<script src="dice.js"></script>-->
   </head>
 
   <body>
@@ -27,17 +27,18 @@
 
     <div class = "spiel">
       <div id="spielbrett" class = "spielbrett">
-      <div class = "mittelbegrenzung"></div>
+        <div class = "mittelbegrenzung"></div>
       </div>
     </div>
 
     <div class = "info">
-        <div id="turn"></div>
-        <div id="board"></div>
-      <button id="wuerfel" onclick=prepare(turn)>Würfeln</button>
-        <div id=roll></div>
-        <div class=button onclick=prepareTurn()>dice</div>
-        <div class=button onclick=removeStone()>removeStone</div>
+      <div id="turn"></div>
+      <br>
+      <div id="board"></div>
+      <button id="wuerfel" onclick=prepareTurn()>Würfeln</button>
+      <button id="remove" onclick=removeStone()>Remove Stone</button>
+      <div id=roll></div>
+      <div id=error></div>
     </div>
   </body>
 
